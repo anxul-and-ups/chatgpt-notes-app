@@ -57,8 +57,8 @@ fun AlarmScreen(preferences: AppPreferences, isDarkMode: Boolean, onBack: () -> 
                         Text("Rings in ${hours}h ${minutes}m", fontSize = 13.sp, color = if (isDarkMode) Color.White else Color.Black)
                         Text("Ringtone: ${ringtone.substringAfterLast('/').ifBlank { "System alarm sound" }}", fontSize = 12.sp, color = Color.Gray)
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            OutlinedButton(onClick = onEdit) { Icon(painterResource(R.drawable.ic_svg_edit), null); Spacer(Modifier.width(4.dp)); Text("Edit") }
-                            OutlinedButton(onClick = { preferences.clearActiveAlarm() }) { Icon(painterResource(R.drawable.ic_svg_delete), null); Spacer(Modifier.width(4.dp)); Text("Remove") }
+                            OutlinedButton(onClick = onEdit) { Icon(Icons.Default.Edit, null); Spacer(Modifier.width(4.dp)); Text("Edit") }
+                            OutlinedButton(onClick = { preferences.clearActiveAlarm() }) { Icon(Icons.Default.Delete, null); Spacer(Modifier.width(4.dp)); Text("Remove") }
                         }
                     }
                 }
