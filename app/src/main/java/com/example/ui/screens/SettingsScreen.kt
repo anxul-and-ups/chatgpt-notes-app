@@ -81,6 +81,7 @@ fun SettingsScreen(
     isDarkMode: Boolean,
     onBack: () -> Unit,
     onOpenSecurityArea: () -> Unit = {},
+    onOpenApiRoom: () -> Unit = {},
     onOpenRecycleBin: () -> Unit
 ) {
     val context = LocalContext.current
