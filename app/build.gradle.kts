@@ -30,7 +30,8 @@ android {
       keyPassword = System.getenv("KEY_PASSWORD")
     }
     create("debugConfig") {
-      storeFile = file("${rootDir}/debug.keystore")
+      val debugKeystore = file("${System.getProperty("user.home")}/.android/debug.keystore")
+      storeFile = debugKeystore
       storePassword = "android"
       keyAlias = "androiddebugkey"
       keyPassword = "android"
@@ -59,6 +60,35 @@ android {
     includeInApk = false
     includeInBundle = true
   }
+}
+
+// Ensure the default Android debug keystore exists for CI and local builds.
+val createDebugKeystore by tasks.registering {
+  doLast {
+    val debugKeystore = file("${System.getProperty("user.home")}/.android/debug.keystore")
+    if (!debugKeystore.exists()) {
+      debugKeystore.parentFile?.mkdirs()
+      exec {
+        commandLine(
+          "keytool",
+          "-genkeypair",
+          "-v",
+          "-keystore", debugKeystore.absolutePath,
+          "-storepass", "android",
+          "-alias", "androiddebugkey",
+          "-keypass", "android",
+          "-keyalg", "RSA",
+          "-keysize", "2048",
+          "-validity", "10000",
+          "-dname", "CN=Android Debug,O=Android,C=US"
+        )
+      }
+    }
+  }
+}
+
+tasks.matching { it.name == "validateSigningDebug" }.configureEach {
+  dependsOn(createDebugKeystore)
 }
 
 // Configure the Secrets Gradle Plugin to use .env and .env.example files
