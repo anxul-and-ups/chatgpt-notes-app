@@ -68,7 +68,7 @@ val createDebugKeystore by tasks.registering {
     val debugKeystore = file("${System.getProperty("user.home")}/.android/debug.keystore")
     if (!debugKeystore.exists()) {
       debugKeystore.parentFile?.mkdirs()
-      exec {
+      project.exec {
         commandLine(
           "keytool",
           "-genkeypair",
